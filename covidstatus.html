@@ -1,0 +1,126 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <title>CRM</title>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css">
+    <link rel="stylesheet" href="style.css">
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/2.2.4/jquery.min.js"></script>
+
+    <style>
+        .preloader {
+    position: fixed;
+    left: 0px;
+    top: 0px;
+    width: 100%;
+    height: 100%;
+    z-index: 9999;
+    background: url('https://media.giphy.com/media/y1ZBcOGOOtlpC/200.gif') 50% 50% no-repeat rgb(249,249,249);
+    opacity: .8;
+    }
+    div.card-body{
+    display: flex;
+}
+div.card-body h6{
+    background: tomato;
+    color: white;
+    padding: 10px 20px;
+    margin: 0 5px;
+}
+    </style>
+
+<script>
+    $(window).load(function() {
+        setTimeout(()=>{
+        $(".preloader").fadeOut();
+    },2000);
+    })
+    </script>
+</head>
+<body>
+
+    <div class="preloader"></div>
+
+    <div class="container-fluid mt-lg-5">
+        <div class="row mx-2">
+            <div class="col-lg-12" id="global">
+              
+            </div>
+        </div>
+        <div class="row mx-2">
+            <div class="col-lg-12">
+                <h2 class="my-5">Covid19 cases coutry wise</h2>
+              <table class="table table-bordered">
+                <thead class="bg-info text-white">  
+                <tr>
+                      <th>Date</th>
+                      <th>Country</th>
+                      <th>NewConfirmed</th>
+                      <th>TotalConfirmed</th>
+                      <th>NewDeaths</th>
+                      <th>TotalDeaths</th>
+                      <th>NewRecovered</th>
+                      <th>TotalRecovered</th>
+                  </tr>
+                </thead>
+                  <tbody id="Country"></tbody>
+              </table>
+            </div>
+        </div>
+    </div>
+
+
+
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.16.0/umd/popper.min.js"></script>
+<script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.4.1/js/bootstrap.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/mustache.js/3.1.0/mustache.min.js"></script> 
+
+<script>
+
+fetch('https://api.covid19api.com/summary')
+.then(res => res.json())
+.then(data => {
+    setTimeout(()=>{
+   document.getElementById('global').innerHTML+= `
+   <div class="card">
+<div class="card-header"><b>Covid19 cases Globaly</b></div>
+<div class="card-body">
+    <h6>New Confirmed: ${data.Global.NewConfirmed}</h6>
+   <h6>Total Confirmed: ${data.Global.TotalConfirmed}</h6>
+   <h6>New Deaths: ${data.Global.NewDeaths}</h6>
+   <h6>Total Deaths: ${data.Global.TotalDeaths}</h6>
+   <h6>New Recovered: ${data.Global.NewRecovered}</h6>
+   <h6>TotalRecovered: ${data.Global.TotalRecovered}</h6>
+</div>
+                </div>
+ 
+   `
+
+    data.Countries.map(area => {
+    document.getElementById('Country').innerHTML += `
+   <tr>
+   <td>${area.Date}</td>
+   <td>${area.Country}</td>
+   <td>${area.NewConfirmed}</td>
+   <td>${area.TotalConfirmed}</td>
+   <td>${area.NewDeaths}</td>
+   <td>${area.TotalDeaths}</td>
+   <td>${area.NewRecovered}</td>
+   <td>${area.TotalRecovered}</td>
+   </tr>
+   `
+    })
+
+} , 500)   
+
+
+});
+
+
+</script>
+
+
+</body>
+</html>
